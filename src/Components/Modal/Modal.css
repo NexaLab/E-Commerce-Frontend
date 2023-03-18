@@ -1,0 +1,14 @@
+.modal-para {
+    width: 450px;
+    text-align: justify;
+     font-size: 15px;
+     font-family:  ProductSansRegular,sans-serif !important;
+}
+
+.ant-btn-primary {
+    background-color: #ff4949;
+}  
+
+.ant-btn-primary:hover {
+    background-color: #ff4949 !important;
+} 
