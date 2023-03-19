@@ -34,3 +34,17 @@
     border: 1px solid #ff4949 !important;
     
 }
+
+
+.select{
+ 
+    margin-top: 20px !important;
+    background: lightgray !important;
+
+}
+
+
+.ant-select-selector{
+
+    background: none !important;
+}
