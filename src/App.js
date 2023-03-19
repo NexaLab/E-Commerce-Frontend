@@ -4,11 +4,11 @@ import Products from './Components/Products/Products';
 
 function App() {
   return (
-    <div className='App'>
-    <Switch>
+    <div className="App">
+      <Switch>
         <Route exact path="/" component={Products} />
-        <Route exact path ="/products" component={Products} />
-    </Switch>
+        <Route exact path="/products" component={Products} />
+      </Switch>
     </div>
   );
 }

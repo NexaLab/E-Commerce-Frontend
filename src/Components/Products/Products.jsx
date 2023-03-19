@@ -3,6 +3,7 @@ import ProductService from '../../services/ProductService';
 import { Layout, Card , Button} from 'antd'
 import './Products.css'
 import CustomModal from '../Modal/CustomModal';
+import DropDown from '../DropDown/DropDown';
 
 const { Header, Content} = Layout;
 const { Meta } = Card;
@@ -17,12 +18,11 @@ function Products() {
     const [productData, setProductData] = useState(null)
 
 
-
     const getAllProducts = () => {
 
         ProductService.getAllProducts()
             .then(res => {
-                setProducts(res.data.data)
+              setProducts(res.data.data)
             })
             .catch(error => {
 
@@ -78,7 +78,12 @@ function allCosmetics (){
   return (
     <Layout >
       <Header className='products-header'>
-      <h1>All Products</h1>  
+        <div>
+          <h1>All Products</h1>
+        </div>
+        <div>
+          <DropDown/> 
+        </div> 
       </Header>
     <Content className='product-content'>
      {products && products.products.map((product,index) => {
