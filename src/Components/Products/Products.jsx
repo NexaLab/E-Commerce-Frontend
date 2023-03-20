@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import ProductService from '../../services/ProductService';
 import { Layout, Card, Button, Select , Pagination } from 'antd'
 import './Products.css'
 import CustomModal from '../Modal/CustomModal';
+import DropDown from '../DropDown/DropDown';
+import { useProducts } from '../../hooks/context/ProductContext';
 
 
 
@@ -17,19 +19,17 @@ const { Option } = Select;
 
 
 
-function Products() {
+function Products(props) {
 
 
    
 
     const [products, setProducts] = useState([]);
-    const [perfumes, setPerfumes] = useState([])
-    const [cosmetics, setCosmetics] = useState([])
+  
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [productData, setProductData] = useState(null)
 
-    const[ selectedSize ,  setSelectedSize] = useState(0);
-    const [ priceIndex , setSelectedPriceIndex ] = useState(0);
+   
 
     const [currentPage, setCurrentPage] = useState(1);
 const [pageSize, setPageSize] = useState(4);
@@ -39,50 +39,93 @@ const currentProducts = products && products.slice(start, end);
 const totalItems = products && products.length
 
 
-    const getAllProducts = () => {
 
-        ProductService.getAllProducts()
+
+
+    // const getAllProducts = () => {
+
+    //     ProductService.getAllProducts()
+    //         .then(res => {
+    //             setProducts(res.data.data.products)
+    //         })
+    //         .catch(error => {
+
+    //             console.log(error);
+    //         })
+    // }
+
+
+
+
+
+
+
+    // function allPerfumes() {
+    //     ProductService.getAllPerfumes()
+    //         .then(res => {
+    //             setPerfumes(res.data.data.perfumes)
+
+    //         })
+    //         .catch(error => {
+
+    //             console.log(error);
+    //         })
+    // }
+
+
+
+
+
+    // function allCosmetics() {
+    //     ProductService.getAllCosmetics()
+    //         .then(res => {
+    //             setCosmetics(res.data.data.cosmetics)
+    //         })
+    //         .catch(error => {
+
+    //             console.log(error);
+    //         })
+    // }
+
+
+
+
+    const getPerfumesOfBrand = (brand) => {
+
+        ProductService.getPerfumesOfBrand(brand)
             .then(res => {
-                setProducts(res.data.data.products)
+
+
+                setProducts(res.data.data)
+                console.log(res.data)
             })
             .catch(error => {
 
                 console.log(error);
             })
+
     }
 
 
 
 
+    
+    const getCosmeticsOfBrand = (brand) => {
 
-
-
-    function allPerfumes() {
-        ProductService.getAllPerfumes()
+        ProductService.getCosmeticsOfBrand(brand)
             .then(res => {
-                setPerfumes(res.data.data.perfumes)
 
+
+                setProducts(res.data.data)
+                console.log(res.data)
             })
             .catch(error => {
 
                 console.log(error);
             })
+
     }
 
-
-
-
-
-    function allCosmetics() {
-        ProductService.getAllCosmetics()
-            .then(res => {
-                setCosmetics(res.data.data.cosmetics)
-            })
-            .catch(error => {
-
-                console.log(error);
-            })
-    }
 
 
 
@@ -90,13 +133,17 @@ const totalItems = products && products.length
 
     useEffect(() => {
 
+        if(props.type === "perfumes"){
 
+            getPerfumesOfBrand(props.brand)
+        }
 
-        allPerfumes()
-        allCosmetics()
-        getAllProducts();
-
-
+        else
+        {
+            getCosmeticsOfBrand(props.brand)
+        }
+     
+      
 
     }, [])
 
@@ -131,7 +178,9 @@ const totalItems = products && products.length
         
         console.log(selectedSize)
         console.log(index);
+        // console.log(product)
         const newProduct = products.filter(stateOfProduct => stateOfProduct === product)[0];
+        
         const prices = newProduct.prices.split(',');
         let tempPrice = prices[0];
         prices[0] = prices[index.key];
@@ -170,7 +219,10 @@ const totalItems = products && products.length
     return (
         <Layout >
             <Header className='products-header'>
-                <h1>All Products</h1>
+                <div>
+                <h1>{props.brand}</h1>
+                </div>
+               
             </Header>
             <Content className='product-content'>
                 {
@@ -199,7 +251,7 @@ const totalItems = products && products.length
                                 cover={<img alt={product.name} src={product.image} />}
                             >
                                 <Meta title={`Product: ${product.name}`} description={<div><span style={{ color: 'darkslategray', fontWeight: 'bold' }}>Brand: </span> <span>{product.brand}</span> </div>} />
-                                <h3>{ product.prices && prices[priceIndex]}</h3>
+                                <h3>{ product.prices && prices[0]}</h3>
                                 <Button onClick={() => {
                                     showModal(product)
                                 }} className='product-button'>View Product</Button>
@@ -259,4 +311,4 @@ const totalItems = products && products.length
     )
 }
 
-export default Products
+export default memo(Products);

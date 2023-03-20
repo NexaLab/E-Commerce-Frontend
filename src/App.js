@@ -1,14 +1,21 @@
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
-import Products from './Components/Products/Products';
+import Perfumes from './Components/Perfumes/Perfumes';
+import { ProductContextProvider } from './hooks/context/ProductContext';
+import Cosmetics from "./Components/Cosmetics/Cosmetics"
+
+
+
 
 function App() {
   return (
-    <div className='App'>
-    <Switch>
-        <Route exact path="/" component={Products} />
-        <Route exact path ="/products" component={Products} />
-    </Switch>
+    <div className="App">
+      <ProductContextProvider>
+      <Switch>
+        <Route exact path="/perfumes" component={Perfumes} />
+        <Route exact path="/cosmetics" component={Cosmetics} />
+      </Switch>
+      </ProductContextProvider>
     </div>
   );
 }
